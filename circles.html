@@ -4,40 +4,64 @@
   <title>Patatap</title>
   <meta charset = "utf-8">
   <link rel="stylesheet" href="circles.css">
+  <script type="text/javascript" src = "https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.9/howler.js">
+
+  </script>
   <script type="text/javascript" src="paper-full.js"></script>
 
   <script type="text/paperscript" canvas="myCanvas">
-  var circles = [];
-    function onKeyDown(event) {
+  var keyData = {
+    a: {
+      color: "purple",
+    sound:  new Howl({
+    src: ['sounds/bubbles.mp3']
+    })
+  },
+    s: {
+      color: "green",
+      sound: new Howl({
+        src: ['sounds/clay.mp3']
+      })
+    }
+  }
 
+  var circles = [];
+  function onKeyDown(event) {
+    if(keyData[event.key]){
+      keyData[event.key].color
       var maxPoint = new Point(view.size.width, view.size.height);
       var randomPoint = Point.random();
       var point = randomPoint * maxPoint;
       var newCircle = new Path.Circle(point, 500);
-      newCircle.fillColor = "orange";
+      newCircle.fillColor = keyData[event.key].color;
       circles.push(newCircle);
+      keyData[event.key].sound.play();
 
 
-}
-// var animatedCircle = new Path.Circle(new Point(300,300),100);
-// animatedCircle.fillColor = "red";
+
+    }
 
 
-function onFrame(event){
-
-  for(i=0 ; i< circles.length; i++){
-    // console.log(circles[i]);
-  circles[i].fillColor.hue += 1;
-    circles[i].scale(.9);
   }
-  // animatedCircle.fillColor.hue += 1;
+  // var animatedCircle = new Path.Circle(new Point(300,300),100);
+  // animatedCircle.fillColor = "red";
 
-}
-// onFrame();
+
+  function onFrame(event){
+
+    for(i=0 ; i< circles.length; i++){
+      // console.log(circles[i]);
+      circles[i].fillColor.hue += 1;
+      circles[i].scale(.9);
+    }
+    // animatedCircle.fillColor.hue += 1;
+
+  }
+  // onFrame();
 </script>
 </head>
 <body>
-	<canvas id="myCanvas" resize></canvas>
+  <canvas id="myCanvas" resize></canvas>
 
 </body>
 
